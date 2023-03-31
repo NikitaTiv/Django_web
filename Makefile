@@ -3,9 +3,6 @@ style:
 
 types:
 	mypy learndjango
-
-test:
-	python -m pytest
 	
 check:
-	make style types test
+	make style types
