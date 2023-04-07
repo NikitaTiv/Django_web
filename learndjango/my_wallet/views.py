@@ -1,8 +1,11 @@
 from django.shortcuts import render, HttpResponse
+from my_wallet.models import Wallet
 
 
 def index(request):
-    return render(request, 'my_wallet/index.html')
+    wallets_list = Wallet.objects.all()
+    context = {'wallets_list': wallets_list, }
+    return render(request, 'my_wallet/index.html', context=context)
 
 
 def get_my_wallets(request):
