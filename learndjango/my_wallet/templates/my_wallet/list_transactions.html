@@ -1,0 +1,18 @@
+{% if transactions %}
+<div class="row">
+    <div class="col-5">Transaction</div>
+    <div class="col-2">Date</div>
+    <div class="col-3">Wallet</div>
+    <div class="col-2">Price</div>
+</div>
+{% for transaction in transactions %}
+    <div class="row">
+        <div class="col-5 border">{{ transaction.description }}</div>
+        <div class="col-2 border">{{ transaction.time_create}}</div>
+        <div class="col-3 border">{{ transaction.wallet }}</div>
+        <div class="col-2 border">{{ transaction.amount }}</div>
+    </div>
+{% endfor %}
+{% else %}
+    <p>This wallet don't have any transactions.</p>
+{% endif %}

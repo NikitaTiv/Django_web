@@ -1,0 +1,6 @@
+{% extends 'my_wallet/base.html' %}
+{% load wallet_tags %}
+
+{% block content %}
+    {% get_transactions wallet_id%}
+{% endblock %}

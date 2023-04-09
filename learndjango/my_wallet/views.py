@@ -1,16 +1,16 @@
 from django.shortcuts import render, HttpResponse
-from my_wallet.models import Wallet
 
 
-def index(request):
-    wallets_list = Wallet.objects.all()
-    context = {'wallets_list': wallets_list, }
-    return render(request, 'my_wallet/index.html', context=context)
+def news(request):
+    return render(request, 'my_wallet/news.html')
+
+
+def get_news(request, news_id):
+    return HttpResponse(f"Новость c id={news_id}")
 
 
 def get_my_wallets(request):
-    context = {'title': 'My wallets', }
-    return render(request, 'my_wallet/my_wallet.html', context=context)
+    return render(request, 'my_wallet/my_wallet.html')
 
 
 def register(request):
@@ -26,7 +26,10 @@ def edit_profile(request):
 
 
 def get_wallet_info(request, wallet_id):
-    return HttpResponse(f'Информация о wallet {wallet_id}')
+    context = {
+        'wallet_id': wallet_id,
+    }
+    return render(request, 'my_wallet/transaction.html', context=context)
 
 
 def statistics(request):

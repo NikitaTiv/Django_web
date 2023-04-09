@@ -1,5 +1,15 @@
 {% extends 'my_wallet/base.html' %}
+{% load wallet_tags %}
 
 {% block content %}
-    <p>{{ title }}</p>
+    {% get_wallets as my_wallets %}
+    <div class="row">
+        {% if my_wallets %}
+            {% for wallet in my_wallets %}
+                <a href="{{ wallet.get_absolute_url }}">{{ wallet.name }}</a>
+            {% endfor %}
+        {% else %}
+            <p>You don't have wallets</p>
+        {% endif %}
+    </div>
 {% endblock %}

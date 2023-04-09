@@ -1,0 +1,23 @@
+{% extends 'my_wallet/base.html' %}
+{% load news_tags %}
+
+{% block content %}
+    <div class="row">
+        {% get_news as news_list %}
+        {% for news in news_list  %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card my-3">
+                    {% if news.photo %}
+                        <img src="{{ news.photo.url }}" class="card-image-top" alt="thumbnail">
+                    {% endif %}
+                    <div class="card-body">
+                        <h3>{{ news.title }}</h3><hr>
+                        <p>{{ news.content|linebreaks|truncatewords:50 }}</p>
+                        <a href="{{ news.get_absolute_url }}" class="btn btn-primary">Read More</a>
+                        <p style="position: absolute; left: 250px; bottom: 0px; color: grey;">{{ news.time_create }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>    
+{% endblock %}
