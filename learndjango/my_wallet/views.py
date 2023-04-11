@@ -1,8 +1,8 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
-from django.contrib import messages
 
 from my_wallet.forms import AddWalletForm
 from my_wallet.models import News, Wallet
+
 
 def news(request):
     return render(request, 'my_wallet/news.html')
