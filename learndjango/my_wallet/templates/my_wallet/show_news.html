@@ -1,0 +1,11 @@
+{% extends 'my_wallet/base.html' %}
+
+{% block content %}
+    <a href="{% url 'home' %}" style="margin-bottom: 30px;" class="btn btn-secondary">Back to main</a>
+    {% if post.photo %}
+        <p class="text-center"><img style="width:70%;" src="{{ post.photo.url}}"></p>
+    {% endif %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.time_create }}</p>
+    {{ post.content|linebreaks }}
+{% endblock %}

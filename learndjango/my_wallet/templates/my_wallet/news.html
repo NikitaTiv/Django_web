@@ -11,10 +11,10 @@
                         <img src="{{ news.photo.url }}" class="card-image-top" alt="thumbnail">
                     {% endif %}
                     <div class="card-body">
-                        <h3>{{ news.title }}</h3><hr>
+                        <h3>{{ news.title }}</h3>
+                        <p style="color: grey;">{{ news.time_create }}</p><hr>
                         <p>{{ news.content|linebreaks|truncatewords:50 }}</p>
-                        <a href="{{ news.get_absolute_url }}" class="btn btn-primary">Read More</a>
-                        <p style="position: absolute; left: 250px; bottom: 0px; color: grey;">{{ news.time_create }}</p>
+                        <a href="{{ news.get_absolute_url }}" class="btn btn-secondary">Read More</a>
                     </div>
                 </div>
             </div>
