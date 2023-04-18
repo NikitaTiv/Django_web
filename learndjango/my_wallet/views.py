@@ -1,36 +1,45 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, HttpResponse, redirect
+from django.views.generic import ListView, DetailView, FormView
+from django.urls import reverse_lazy
 
-from my_wallet.forms import AddWalletForm
-from my_wallet.models import News, Wallet
-
-
-def news(request):
-    return render(request, 'my_wallet/news.html')
-
-
-def show_news(request, news_slug):
-    post = get_object_or_404(News, slug=news_slug)
-    context = {
-        'post': post,
-    }
-    return render(request, 'my_wallet/show_news.html', context=context)
+from my_wallet.forms import AddWalletForm, RegisterUserForm
+from my_wallet.models import News, Wallet, Transaction
 
 
-def get_my_wallets(request):
-    form = AddWalletForm()
-    context = {
-        'form': form,
-    }
-    return render(request, 'my_wallet/my_wallet.html', context=context)
+class NewsHome(ListView):
+    paginate_by = 6
+    model = News
+    template_name = 'my_wallet/news.html'
+    context_object_name = 'news'
+
+    def get_queryset(self):
+        return News.objects.order_by('-id').filter(is_published=True)
 
 
+class ShowNews(DetailView):
+    model = News
+    template_name = 'my_wallet/show_news.html'
+    slug_url_kwarg = 'news_slug'
+    context_object_name = 'post'
+
+
+class MyWallet(LoginRequiredMixin, FormView):
+    form_class = AddWalletForm
+    template_name = 'my_wallet/my_wallet.html'
+    login_url = reverse_lazy('home')
+
+
+@login_required
 def add_wallet(request):
-    wallet_name = request.POST['name']
+    wallet_name = request.POST.get('name', False)
     if wallet_name:
         Wallet.objects.create(name=wallet_name)
     return redirect('wallets')
 
 
+@login_required
 def delete_wallet(request):
     wallet_id = request.POST.get('wallets', False)
     if wallet_id:
@@ -40,7 +49,8 @@ def delete_wallet(request):
 
 
 def register(request):
-    return HttpResponse('Registration')
+    form = RegisterUserForm()
+    return render(request, 'my_wallet/registration.html', {'form': form})
 
 
 def authorization(request):
@@ -51,11 +61,13 @@ def edit_profile(request):
     return HttpResponse('Редактирование профиля')
 
 
-def get_wallet_info(request, wallet_id):
-    context = {
-        'wallet_id': wallet_id,
-    }
-    return render(request, 'my_wallet/transaction.html', context=context)
+class WalletInfo(LoginRequiredMixin, ListView):
+    model = Transaction
+    template_name = 'my_wallet/transaction.html'
+    context_object_name = 'transactions'
+
+    def get_queryset(self):
+        return Transaction.objects.filter(wallet__slug=self.kwargs['wallet_slug'])
 
 
 def statistics(request):

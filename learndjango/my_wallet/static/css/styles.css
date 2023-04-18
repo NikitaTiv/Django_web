@@ -1,0 +1,46 @@
+a { 
+    text-decoration: none;
+    color:black;
+} 
+
+.card-img-top {
+    max-height: 250px;
+    overflow: hidden;
+}
+
+.text-center {
+    text-align: center;
+}
+
+#id_wallets {
+    width: 300px;
+}
+
+.list-pages {
+	text-align: center;
+	margin: 0 0 20px 0;
+}
+
+.list-pages .page-num {
+	display: inline-block;
+	width: 40px;
+	height: 44px;
+    margin: 0px 5px;
+	padding: 8px 0 0 0;
+	border: 1px solid #d0d0d0;
+	border-radius: 30px;
+}
+
+.list-pages .page-num:hover {
+	box-shadow: 3px 3px 1px #d0d0d0; 
+}
+
+.list-pages .page-num-selected {
+	font-size: 18px;
+	border: none;
+	color: #000;
+}
+
+.list-pages .page-num-selected:hover {
+	box-shadow: none; 
+}

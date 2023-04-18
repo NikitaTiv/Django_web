@@ -1,0 +1,9 @@
+{% extends 'my_wallet/base.html' %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary mb-3">Создать пользователя</button>
+</form>
+{% endblock %}

@@ -3,7 +3,8 @@ from django.urls import reverse
 
 
 class Wallet(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=30)
+    slug = models.CharField(max_length=30)
     time_update = models.DateField(auto_now=True)
     time_create = models.DateField(auto_now_add=True)
 
@@ -11,7 +12,7 @@ class Wallet(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('wallet_info', kwargs={'wallet_id': self.pk})
+        return reverse('wallet_info', kwargs={'wallet_slug': self.slug})
 
 
 class Transaction(models.Model):
