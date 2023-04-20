@@ -16,9 +16,15 @@
           <li class="nav-item" style="padding: 10px 0px;">
             <a class="nav-link" aria-current="page" href="{% url 'home' %}">Главная</a>
           </li>
-          <li class="nav-item" style="padding: 10px 0px;">
-            <a class="nav-link" href="{% url 'wallets' %}">Мои кошельки</a>
-          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item" style="padding: 10px 0px;">
+              <a class="nav-link" href="{% url 'wallets' %}">Мои кошельки</a>
+            </li>
+          {% else %}
+            <li class="nav-item" style="padding: 10px 0px;color: grey;" title="Необходима авторизация">
+              Мои кошельки
+            </li>
+          {% endif %}
           <li class="nav-item" style="padding: 10px 0px;">
             <a class="nav-link" href="#">Статистика</a>
           </li>
@@ -29,7 +35,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark">
                   <li style="padding: 10px 0px;"><a class="dropdown-item" href="{% url 'edit_profile' %}">Редактирование профиля</a></li>
-                  <li style="padding: 10px 0px;"><a class="dropdown-item" href="#">Выйти</a></li>
+                  <li style="padding: 10px 0px;"><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
                 </ul>
             {% else %}
                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,7 +43,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark">
                   <li style="padding: 10px 0px;"><a class="dropdown-item" href="{% url 'register' %}">Регистрация</a></li>
-                  <li style="padding: 10px 0px;"><a class="dropdown-item" href="{% url 'authorization' %}">Авторизация</a></li>
+                  <li style="padding: 10px 0px;"><a class="dropdown-item" href="{% url 'login' %}">Авторизация</a></li>
                 </ul>
             {% endif %}
           </li>

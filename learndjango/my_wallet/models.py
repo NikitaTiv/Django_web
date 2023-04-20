@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.urls import reverse
 
 
@@ -7,6 +8,7 @@ class Wallet(models.Model):
     slug = models.CharField(max_length=30)
     time_update = models.DateField(auto_now=True)
     time_create = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name

@@ -1,22 +1,38 @@
 {% extends 'my_wallet/base.html' %}
 
 {% block content %}
-    {% if transactions %}
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-2">
+            <a href="{% url 'wallets' %}" style="width: 100%;" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
+    <div class="row">
+        <form method="post">
+            {% csrf_token %}
+            {% for f in form %}
+                <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:  </label>{{ f }}</p>
+                <div class="form-error">{{ f.errors }}</div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mb-3">Создать пользователя</button>
+        </form>
+    </div>
     <div class="row">
         <div class="col-5">Transaction</div>
         <div class="col-2">Date</div>
-        <div class="col-3">Wallet</div>
-        <div class="col-2">Price</div>
+        <div class="col-2">Wallet</div>
+        <div class="col-1">Price</div>
     </div>
     {% for transaction in transactions %}
         <div class="row">
-            <div class="col-5 border">{{ transaction.description }}</div>
-            <div class="col-2 border">{{ transaction.time_create}}</div>
-            <div class="col-3 border">{{ transaction.wallet }}</div>
-            <div class="col-2 border">{{ transaction.amount }}</div>
+            <div class="col-5 border trans-cell">{{ transaction.description }}</div>
+            <div class="col-2 border trans-cell">{{ transaction.time_create}}</div>
+            <div class="col-2 border trans-cell">{{ transaction.wallet }}</div>
+            <div class="col-1 border trans-cell">{{ transaction.amount }}</div>
+            {% if transaction.wallet %}
+                <div class="col-1 border trans-cell-button" style="width: auto">
+                    <a href="{% url 'delete_transaction' transaction_id=transaction.id %}" style="margin-bottom: 30px;" class="btn btn-secondary">Удалить</a>
+                </div>
+            {% endif %}
         </div>
     {% endfor %}
-    {% else %}
-        <p>This wallet don't have any transactions.</p>
-    {% endif %}
 {% endblock %}

@@ -3,6 +3,10 @@ a {
     color:black;
 } 
 
+.alert {
+    color: red;
+}
+
 .card-img-top {
     max-height: 250px;
     overflow: hidden;
@@ -14,6 +18,18 @@ a {
 
 #id_wallets {
     width: 300px;
+}
+
+.form-label {
+    display: inline-block;
+    min-width: 150px;
+    vertical-align: top;
+}
+
+.form-error ul {
+    list-style: none;
+    padding: 0;
+    color: #CC0000;
 }
 
 .list-pages {
@@ -43,4 +59,14 @@ a {
 
 .list-pages .page-num-selected:hover {
 	box-shadow: none; 
+}
+
+.trans-cell {
+    padding: 20px; 
+    height: 70px;
+}
+
+.trans-cell-button {
+    padding: 15px; 
+    height: 70px;
 }
