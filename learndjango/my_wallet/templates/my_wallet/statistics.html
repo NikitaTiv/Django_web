@@ -1,0 +1,29 @@
+{% extends 'my_wallet/base.html' %}
+
+{% block content %}
+    <h1>Статистика</h1>
+    <div class="row">
+        <div class="col-4 border">
+            <tr>Название</tr>
+        </div>
+        <div class="col-2 border">
+            <tr>Цена</tr>
+        </div>
+        <div class="col-3 border">
+            <tr>Создано</tr>
+        </div>
+    </div>
+    <div class="row">
+        {% for element in statistics %}
+                <div class="col-4 border">
+                    <tr>{{ element.description }}</tr>
+                </div>
+                <div class="col-2 border">
+                    <tr>{{ element.amount }}</tr>
+                </div>
+                <div class="col-3 border">
+                    <tr> {{ element.time_create }}</tr>
+                </div>
+        {% endfor %}
+    </div>
+{% endblock %}

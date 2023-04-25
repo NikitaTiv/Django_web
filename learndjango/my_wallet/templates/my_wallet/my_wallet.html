@@ -1,9 +1,14 @@
 {% extends 'my_wallet/base.html' %}
-{% load wallet_tags %}
 
 {% block content %}
-    {% get_wallets as my_wallets %}
     <p>Create wallet</p>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
     <form method="post">
         {% csrf_token %}
         <p><label for="{{ form.name.id_for_label }}">{{ form.name.label }}: </label>{{ form.name }}</p>

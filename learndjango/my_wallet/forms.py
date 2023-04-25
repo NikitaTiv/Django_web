@@ -28,4 +28,3 @@ class RegisterUserForm(UserCreationForm):
 class AddTransactionForm(forms.Form):
     description = forms.CharField(max_length=50, label='Название')
     amount = forms.CharField(max_length=50, label='Цена')
-    wallet = forms.CharField(max_length=50, label='Wallet')

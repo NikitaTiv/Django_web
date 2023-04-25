@@ -16,8 +16,9 @@ a {
     text-align: center;
 }
 
-#id_wallets {
-    width: 300px;
+form select {
+    width: 320px;
+    height: 110px;
 }
 
 .form-label {

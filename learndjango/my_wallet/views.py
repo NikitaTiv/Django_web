@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.shortcuts import HttpResponse, redirect, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, FormView, CreateView
@@ -44,9 +45,13 @@ class MyWallet(LoginRequiredMixin, FormView):
 @login_required
 def add_wallet(request):
     wallet_name = request.POST.get('name', False)
-    slug = translit(wallet_name, language_code='ru', reversed=True)
     if wallet_name:
-        Wallet.objects.create(name=wallet_name, slug=slug.lower(), user_id=request.user.id)
+        if Wallet.objects.filter(user=request.user, name=wallet_name).exists():
+            messages.success(request, 'Такой Wallet уже существует.')
+        else:
+            slug = translit(wallet_name, language_code='ru', reversed=True)
+            slug_without_spaces = slug.replace(' ', '_')
+            Wallet.objects.create(name=wallet_name, slug=slug_without_spaces.lower(), user_id=request.user.id)
     return redirect('wallets')
 
 
@@ -62,14 +67,15 @@ def delete_wallet(request):
 @login_required
 def open_wallet(request):
     wallet_id = request.POST.get('wallets', False)
-    wallet = Wallet.objects.values('slug').get(pk=wallet_id)
-    return HttpResponseRedirect(reverse('wallet_info', args=[wallet['slug']]))
+    if wallet_id:
+        wallet = Wallet.objects.values('slug').get(pk=wallet_id)
+        return HttpResponseRedirect(reverse('wallet_info', args=[wallet['slug']]))
+    return redirect('wallets')
 
 
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'my_wallet/registration.html'
-    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         try:
@@ -105,10 +111,16 @@ class WalletInfo(LoginRequiredMixin, ListView, FormView):
     context_object_name = 'transactions'
     allow_empty = False
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['wallet_name'] = self.kwargs['wallet_slug']
+        return context
+
     def get_queryset(self):
         if Wallet.objects.filter(user__username=self.request.user, slug=self.kwargs['wallet_slug']).exists():
-            if Wallet.objects.get(slug=self.kwargs['wallet_slug']).transaction_set.count() > 0:
-                return Transaction.objects.filter(wallet__slug=self.kwargs['wallet_slug']).select_related('wallet')
+            current_wallet_id = Wallet.objects.values('id').get(user__username=self.request.user, slug=self.kwargs['wallet_slug'])
+            if Wallet.objects.get(pk=current_wallet_id['id']).transaction_set.count() > 0:
+                return Transaction.objects.filter(wallet=current_wallet_id['id']).select_related('wallet')
             else:
                 return [
                     Transaction(
@@ -117,11 +129,36 @@ class WalletInfo(LoginRequiredMixin, ListView, FormView):
                 ]
 
 
+@login_required
+def add_transaction(request, wallet_name):
+    wallet_description = request.POST.get('description', False)
+    wallet_amount = request.POST.get('amount', False)
+    wallet = Wallet.objects.values('id').get(slug=wallet_name, user__username=request.user)
+    if wallet_description and wallet_amount and wallet:
+        try:
+            Transaction.objects.create(
+                description=wallet_description, amount=wallet_amount, wallet_id=wallet['id'],
+            )
+        except ValidationError:
+            messages.success(request, "Поле 'Цена' должна содержать число.")
+    
+    return HttpResponseRedirect(reverse('wallet_info', args=[wallet_name]))
+
+
 def delete_transaction(request, transaction_id):
     deleted_transaction = Transaction.objects.get(pk=transaction_id)
     deleted_transaction.delete()
     return HttpResponseRedirect(reverse('wallet_info', args=[deleted_transaction.wallet.slug]))
 
 
-def statistics(request):
-    return HttpResponse('Statistics')
+class Statistics(LoginRequiredMixin, ListView):
+    model = Transaction
+    template_name = 'my_wallet/statistics.html'
+    context_object_name = 'statistics'
+
+    def get_queryset(self):
+        return Transaction.objects.filter(wallet__user=self.request.user).all()
+
+
+# def statistics(request):
+#     return HttpResponse('Statistics')

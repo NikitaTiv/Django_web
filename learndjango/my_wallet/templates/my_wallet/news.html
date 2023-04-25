@@ -23,7 +23,7 @@
             <ul>
                 {% if page_obj.has_previous %}
                     <li class="page-num">
-                        <a href="?page={{ page_object.previous_page_number }}">&lt;</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
                     </li>
                 {% endif %}
                 {% for page in paginator.page_range %}
@@ -37,7 +37,7 @@
                 {% endfor %}
                 {% if page_obj.has_next %}
                 <li class="page-num">
-                    <a href="?page={{ page_object.next_page_number }}">&gt;</a>
+                    <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
                 </li>
             {% endif %}
             </ul>
