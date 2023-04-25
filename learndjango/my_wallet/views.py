@@ -118,7 +118,9 @@ class WalletInfo(LoginRequiredMixin, ListView, FormView):
 
     def get_queryset(self):
         if Wallet.objects.filter(user__username=self.request.user, slug=self.kwargs['wallet_slug']).exists():
-            current_wallet_id = Wallet.objects.values('id').get(user__username=self.request.user, slug=self.kwargs['wallet_slug'])
+            current_wallet_id = Wallet.objects.values('id').get(
+                user__username=self.request.user, slug=self.kwargs['wallet_slug']
+            )
             if Wallet.objects.get(pk=current_wallet_id['id']).transaction_set.count() > 0:
                 return Transaction.objects.filter(wallet=current_wallet_id['id']).select_related('wallet')
             else:
@@ -141,7 +143,7 @@ def add_transaction(request, wallet_name):
             )
         except ValidationError:
             messages.success(request, "Поле 'Цена' должна содержать число.")
-    
+
     return HttpResponseRedirect(reverse('wallet_info', args=[wallet_name]))
 
 
@@ -158,7 +160,3 @@ class Statistics(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Transaction.objects.filter(wallet__user=self.request.user).all()
-
-
-# def statistics(request):
-#     return HttpResponse('Statistics')
