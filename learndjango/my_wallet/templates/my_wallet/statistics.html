@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Статистика</h1>
+    {% if statistics %}
     <div class="row">
         <div class="col-4 border">
             <tr>Название</tr>
@@ -11,6 +12,9 @@
         </div>
         <div class="col-3 border">
             <tr>Создано</tr>
+        </div>
+        <div class="col-2 border">
+            <tr>Wallet</tr>
         </div>
     </div>
     <div class="row">
@@ -24,6 +28,12 @@
                 <div class="col-3 border">
                     <tr> {{ element.time_create }}</tr>
                 </div>
+                <div class="col-2 border">
+                    <tr> {{ element.wallet }}</tr>
+                </div>
         {% endfor %}
     </div>
+    {% else %}
+        <p>У вас нет сохраненных транзакций</p>
+    {% endif %}
 {% endblock %}
