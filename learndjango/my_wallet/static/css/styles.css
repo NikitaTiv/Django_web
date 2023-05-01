@@ -16,7 +16,15 @@ a {
     text-align: center;
 }
 
-form select {
+form input {
+    width: 200px;
+}
+
+.main-cell {
+    background-color: rgb(165, 163, 163);
+}
+
+.form-big select {
     width: 320px;
     height: 110px;
 }

@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
 from .models import Wallet
+from my_wallet.utils.get_filters import get_filters
 
 
 class AddWalletForm(forms.Form):
@@ -28,3 +30,9 @@ class RegisterUserForm(UserCreationForm):
 class AddTransactionForm(forms.Form):
     description = forms.CharField(max_length=50, label='Название')
     amount = forms.CharField(max_length=50, label='Цена')
+
+
+class StatReportForm(forms.Form):
+    date_from = forms.DateField(input_formats=['%d/%m/%Y'], label='Дата от ', required=False)
+    date_to = forms.DateField(input_formats=['%d/%m/%Y'], label='Дата до ', required=False)
+    filters = forms.ChoiceField(choices=get_filters(), label='Фильтровать по ', required=False)

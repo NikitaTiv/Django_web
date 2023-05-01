@@ -1,7 +1,7 @@
 from django.urls import path
 
 from my_wallet.views import (NewsHome, ShowNews, MyWallet, add_wallet, delete_wallet, RegisterUser, LoginUser,
-                             open_wallet, logout_user, edit_profile, WalletInfo, Statistics, delete_transaction,
+                             open_wallet, logout_user, edit_profile, WalletInfo, statistics, delete_transaction,
                              add_transaction)
 
 urlpatterns = [
@@ -18,5 +18,5 @@ urlpatterns = [
     path('login/', LoginUser.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
     path('edit_profile/', edit_profile, name='edit_profile'),
-    path('statistics/', Statistics.as_view(), name='statistics'),
+    path('statistics/', statistics, name='statistics'),
 ]

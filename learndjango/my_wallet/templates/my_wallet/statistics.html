@@ -1,39 +1,72 @@
 {% extends 'my_wallet/base.html' %}
 
 {% block content %}
-    <h1>Статистика</h1>
-    {% if statistics %}
     <div class="row">
-        <div class="col-4 border">
-            <tr>Название</tr>
+        <div class="col-4">
+            <h2>Фильтры</h2>
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            <form action="{% url 'statistics' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Применить</button>
+            </form>
+            <script>
+                $(function () {
+                    $("#id_date_from").datepicker({
+                    format:'dd/mm/yyyy',
+                    });
+                    $("#id_date_to").datepicker({
+                        format:'dd/mm/yyyy',
+                    });
+                });
+            </script>
         </div>
-        <div class="col-2 border">
-            <tr>Цена</tr>
-        </div>
-        <div class="col-3 border">
-            <tr>Создано</tr>
-        </div>
-        <div class="col-2 border">
-            <tr>Wallet</tr>
+        <div class="col-7">
+            <h2>Статистика</h2>
+            {% if statistics %}
+                <div class="row">
+                    <div class="col-4 border main-cell">
+                        <tr>Название</tr>
+                    </div>
+                    <div class="col-2 border main-cell">
+                        <tr>Цена (руб)</tr>
+                    </div>
+                    <div class="col-3 border main-cell">
+                        <tr>Создано</tr>
+                    </div>
+                    <div class="col-2 border main-cell">
+                        <tr>Wallet</tr>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for element in statistics %}
+                            <div class="col-4 border">
+                                <tr>{{ element.description }}</tr>
+                            </div>
+                            <div class="col-2 border">
+                                <tr>{{ element.amount }}</tr>
+                            </div>
+                            <div class="col-3 border">
+                                <tr> {{ element.time_create }}</tr>
+                            </div>
+                            <div class="col-2 border">
+                                <tr> {{ element.wallet }}</tr>
+                            </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10" style="text-align: right;">Итого: {{ summary }} руб.</div>
+                </div>
+            {% else %}
+                <p>У вас нет сохраненных транзакций</p>
+            {% endif %}
         </div>
     </div>
-    <div class="row">
-        {% for element in statistics %}
-                <div class="col-4 border">
-                    <tr>{{ element.description }}</tr>
-                </div>
-                <div class="col-2 border">
-                    <tr>{{ element.amount }}</tr>
-                </div>
-                <div class="col-3 border">
-                    <tr> {{ element.time_create }}</tr>
-                </div>
-                <div class="col-2 border">
-                    <tr> {{ element.wallet }}</tr>
-                </div>
-        {% endfor %}
-    </div>
-    {% else %}
-        <p>У вас нет сохраненных транзакций</p>
-    {% endif %}
 {% endblock %}

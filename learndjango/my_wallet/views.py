@@ -6,13 +6,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
-from django.shortcuts import HttpResponse, redirect, HttpResponseRedirect
+from django.http import HttpResponse
+from django.shortcuts import HttpResponse, redirect, HttpResponseRedirect, render
 from django.views.generic import ListView, DetailView, FormView, CreateView
 from django.urls import reverse_lazy, reverse
 from transliterate import translit
 
-from my_wallet.forms import AddWalletForm, RegisterUserForm, AddTransactionForm
+from my_wallet.forms import AddWalletForm, RegisterUserForm, AddTransactionForm, StatReportForm
 from my_wallet.models import News, Wallet, Transaction
+from my_wallet.utils.convert_func import convert_date
+from my_wallet.utils.db_functions import get_objects_list
 
 
 class NewsHome(ListView):
@@ -122,7 +125,9 @@ class WalletInfo(LoginRequiredMixin, ListView, FormView):
                 user__username=self.request.user, slug=self.kwargs['wallet_slug']
             )
             if Wallet.objects.get(pk=current_wallet_id['id']).transaction_set.count() > 0:
-                return Transaction.objects.filter(wallet=current_wallet_id['id']).select_related('wallet')
+                return Transaction.objects.order_by('-time_create').filter(
+                    wallet=current_wallet_id['id']
+                ).select_related('wallet')
             else:
                 return [
                     Transaction(
@@ -153,10 +158,15 @@ def delete_transaction(request, transaction_id):
     return HttpResponseRedirect(reverse('wallet_info', args=[deleted_transaction.wallet.slug]))
 
 
-class Statistics(LoginRequiredMixin, ListView):
-    model = Transaction
-    template_name = 'my_wallet/statistics.html'
-    context_object_name = 'statistics'
-
-    def get_queryset(self):
-        return Transaction.objects.filter(wallet__user=self.request.user).all()
+@login_required
+def statistics(request):
+    form = StatReportForm(request.POST) if request.method == "POST" else StatReportForm()
+    try:
+        date_from, date_to = convert_date(request.POST.get('date_from', None), request.POST.get('date_to', None))
+    except ValueError:
+        messages.success(request, "Дата указана не корректно.")
+        return redirect('statistics')
+    ordering = request.POST['filters'] if request.method == "POST" else '-time_create'
+    transactions = get_objects_list(date_from, date_to, ordering, request.user)
+    summary = sum([transaction.amount for transaction in transactions])
+    return render(request, "my_wallet/statistics.html", {'form': form, 'statistics': transactions, 'summary': summary})

@@ -9,7 +9,7 @@
         </div>
         {% endfor %}
     {% endif %}
-    <form method="post">
+    <form method="post" class="form-big">
         {% csrf_token %}
         <p><label for="{{ form.name.id_for_label }}">{{ form.name.label }}: </label>{{ form.name }}</p>
         <button type="submit" formaction="{% url 'add_wallet' %}" class="btn btn-secondary" name="add">Добавить</button>
