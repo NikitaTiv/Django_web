@@ -11,10 +11,10 @@ def get_parse_date_tuple() -> tuple[str, str, str]:
 
 def get_photo_directory() -> str:
     year, month, day = get_parse_date_tuple()
-    return os.path.join('..', '..', 'media', 'photos', year, month, day)
+    return os.path.join('..', '..', '..', 'media', 'photos', year, month, day)
 
 
-def download_photo(directory: str, image_url: str, slug: str) -> str:
+def download_photo(directory: str, image_url: str, slug: str):
     os.makedirs(directory, exist_ok=True)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:65.0) Gecko/20100101 Firefox/65.0',
@@ -33,7 +33,7 @@ def cut_slug(text: str) -> str:
 
 def replace_slug_symblols(text: str) -> str:
     replace_values = {
-        '’': '', ',': '', '.': '', ' ': '_', ':': '', '‘': '',
+        '’': '', ',': '', '.': '', ' ': '_', ':': '', '‘': '', '/': '',
     }
     for old_symbol, new_symbol in replace_values.items():
         text = text.replace(old_symbol, new_symbol)
@@ -45,8 +45,8 @@ def save_news(title: str, content: str, image_url: str, slug: str) -> None:
     directory = get_photo_directory()
     download_photo(directory, image_url, slug)
     news = News(
-        title=title, content=content, photo=os.path.join(directory[12:], f'{slug}.jpg'),
+        title=title, content=content, photo=os.path.join(directory[15:], f'{slug}.jpg'),
         slug=slug, time_create=datetime.now(), is_published=True
     )
     session.add(news)
-    session.commit()   
+    session.commit()
