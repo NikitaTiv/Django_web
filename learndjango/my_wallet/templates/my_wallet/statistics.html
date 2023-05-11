@@ -14,7 +14,8 @@
             <form action="{% url 'statistics' %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit">Применить</button>
+                <button type="submit" class="btn btn-secondary">Применить</button>
+                <button name="PDF" type="submit" class="btn btn-secondary">Получить PDF</button>
             </form>
             <script>
                 $(function () {

@@ -14,7 +14,7 @@ def get_photo_directory() -> str:
     return os.path.join('..', '..', '..', 'media', 'photos', year, month, day)
 
 
-def download_photo(directory: str, image_url: str, slug: str):
+def download_photo(directory: str, image_url: str, slug: str) -> None:
     os.makedirs(directory, exist_ok=True)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:65.0) Gecko/20100101 Firefox/65.0',
@@ -33,7 +33,7 @@ def cut_slug(text: str) -> str:
 
 def replace_slug_symblols(text: str) -> str:
     replace_values = {
-        '’': '', ',': '', '.': '', ' ': '_', ':': '', '‘': '', '/': '',
+        '’': '', ',': '', '.': '', ' ': '_', ':': '', '‘': '', '/': '', "'": '', 'é': 'e',
     }
     for old_symbol, new_symbol in replace_values.items():
         text = text.replace(old_symbol, new_symbol)

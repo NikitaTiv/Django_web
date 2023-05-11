@@ -1,7 +1,7 @@
 {% extends 'my_wallet/base.html' %}
 
 {% block content %}
-    <p>Create wallet</p>
+    <h1 style="margin-bottom: 30px;">Создать кошелек</h1>
     {% if messages %}
         {% for message in messages %}
         <div class="alert" role="alert">
@@ -14,7 +14,7 @@
         <p><label for="{{ form.name.id_for_label }}">{{ form.name.label }}: </label>{{ form.name }}</p>
         <button type="submit" formaction="{% url 'add_wallet' %}" class="btn btn-secondary" name="add">Добавить</button>
         <p class="select-form"><label for="{{ form.wallets.id_for_label }}">{{ form.wallets.label }}: </label>{{ form.wallets }}</p>
-        <button type="submit" formaction="{% url 'delete_wallet' %}" class="btn btn-primary mb-3">Удалить</button>
-        <button type="submit" formaction="{% url 'open_wallet' %}" class="btn btn-primary mb-3">Просмотр</button>
+        <button type="submit" formaction="{% url 'delete_wallet' %}" class="btn btn-secondary">Удалить</button>
+        <button type="submit" formaction="{% url 'open_wallet' %}" class="btn btn-secondary">Просмотр</button>
     </form>
 {% endblock %}

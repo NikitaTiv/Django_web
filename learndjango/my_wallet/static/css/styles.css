@@ -20,6 +20,10 @@ form input {
     width: 200px;
 }
 
+form button {
+    margin-bottom: 30px;
+}
+
 .main-cell {
     background-color: rgb(165, 163, 163);
 }
