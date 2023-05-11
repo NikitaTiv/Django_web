@@ -1,9 +1,9 @@
-from db import News, session
 from dotenv import load_dotenv
 import os
 import requests
 
-from utils import replace_slug_symblols, save_news
+from learndjango.my_wallet.utils.parsers.db import News, session
+from utils_parser import replace_slug_symblols, save_news
 
 load_dotenv()
 

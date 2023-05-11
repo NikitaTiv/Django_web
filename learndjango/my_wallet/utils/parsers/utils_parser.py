@@ -1,5 +1,5 @@
 from datetime import datetime
-from db import News, session
+from learndjango.my_wallet.utils.parsers.db import News, session
 import os
 import requests
 
@@ -9,8 +9,7 @@ def get_parse_date_tuple() -> tuple[str, str, str]:
     return today.strftime("%Y"), today.strftime("%m"), today.strftime("%d")
 
 
-def get_photo_directory() -> str:
-    year, month, day = get_parse_date_tuple()
+def get_photo_directory(year: str, month: str, day: str) -> str:
     return os.path.join('..', '..', '..', 'media', 'photos', year, month, day)
 
 
@@ -33,7 +32,7 @@ def cut_slug(text: str) -> str:
 
 def replace_slug_symblols(text: str) -> str:
     replace_values = {
-        '’': '', ',': '', '.': '', ' ': '_', ':': '', '‘': '', '/': '', "'": '', 'é': 'e',
+        '’': '', ',': '', '.': '', ' ': '_', ':': '', '‘': '', '/': '', "'": '', 'é': '',
     }
     for old_symbol, new_symbol in replace_values.items():
         text = text.replace(old_symbol, new_symbol)
@@ -42,7 +41,8 @@ def replace_slug_symblols(text: str) -> str:
 
 
 def save_news(title: str, content: str, image_url: str, slug: str) -> None:
-    directory = get_photo_directory()
+    year, month, day = get_parse_date_tuple()
+    directory = get_photo_directory(year, month, day)
     download_photo(directory, image_url, slug)
     news = News(
         title=title, content=content, photo=os.path.join(directory[15:], f'{slug}.jpg'),

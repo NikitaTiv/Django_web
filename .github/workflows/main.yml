@@ -19,4 +19,4 @@ jobs:
       - name: Run flake8
         run: flake8 .
       - name: Run mypy
-        run: mypy .
+        run: mypy . --explicit-package-bases
