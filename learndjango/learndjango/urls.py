@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import path, include
 
-import settings
+from learndjango.settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 
 
 urlpatterns = [
@@ -25,10 +25,10 @@ urlpatterns = [
     path('', include('my_wallet.urls')),
 ]
 
-if settings.DEBUG:
+if DEBUG:
     import debug_toolbar
 
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

@@ -2,7 +2,7 @@ style:
 	flake8 .
 
 types:
-	mypy learndjango --explicit-package-bases
+	mypy learndjango
 	
 test:
 	python -m pytest

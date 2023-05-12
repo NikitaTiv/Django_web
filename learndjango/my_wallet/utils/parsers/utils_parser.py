@@ -1,5 +1,4 @@
 from datetime import datetime
-from learndjango.my_wallet.utils.parsers.db import News, session
 import os
 import requests
 
@@ -38,15 +37,3 @@ def replace_slug_symblols(text: str) -> str:
         text = text.replace(old_symbol, new_symbol)
     slug = cut_slug(text)
     return slug
-
-
-def save_news(title: str, content: str, image_url: str, slug: str) -> None:
-    year, month, day = get_parse_date_tuple()
-    directory = get_photo_directory(year, month, day)
-    download_photo(directory, image_url, slug)
-    news = News(
-        title=title, content=content, photo=os.path.join(directory[15:], f'{slug}.jpg'),
-        slug=slug, time_create=datetime.now(), is_published=True
-    )
-    session.add(news)
-    session.commit()
