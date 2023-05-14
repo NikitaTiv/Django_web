@@ -19,4 +19,6 @@ jobs:
       - name: Run flake8
         run: flake8 .
       - name: Run mypy
-        run: mypy . --explicit-package-bases
+        run: mypy .
+      - name: Run tests
+        run: python -m pytest

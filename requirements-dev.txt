@@ -2,6 +2,7 @@
 
 attrs==22.2.0
 cfgv==3.3.1
+coverage==7.2.5
 distlib==0.3.6
 django-debug-toolbar==4.0.0
 filelock==3.10.7
@@ -20,6 +21,7 @@ pre-commit==3.2.1
 pycodestyle==2.10.0
 pyflakes==3.0.1
 pytest==7.2.2
+pytest-cov==4.0.0
 pyyaml==6.0
 tomli==2.0.1
 typing_extensions==4.5.0
