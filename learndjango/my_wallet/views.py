@@ -10,10 +10,12 @@ from django.http import HttpResponse
 from django.shortcuts import HttpResponse, redirect, HttpResponseRedirect, render
 from django.views.generic import ListView, DetailView, FormView, CreateView
 from django.urls import reverse_lazy, reverse
+from rest_framework import generics
 from transliterate import translit
 
 from my_wallet.forms import AddWalletForm, RegisterUserForm, AddTransactionForm, StatReportForm
 from my_wallet.models import News, Wallet, Transaction
+from my_wallet.serializers import NewsSerializer
 from my_wallet.utils.convert_func import convert_date
 from my_wallet.utils.db_functions import get_objects_list
 
@@ -170,3 +172,8 @@ def statistics(request):
     transactions = get_objects_list(date_from, date_to, ordering, request.user)
     summary = sum([transaction.amount for transaction in transactions])
     return render(request, "my_wallet/statistics.html", {'form': form, 'statistics': transactions, 'summary': summary})
+
+
+class NewsAPI(generics.ListAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer

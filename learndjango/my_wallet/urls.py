@@ -2,7 +2,7 @@ from django.urls import path
 
 from my_wallet.views import (NewsHome, ShowNews, MyWallet, add_wallet, delete_wallet, RegisterUser, LoginUser,
                              open_wallet, logout_user, edit_profile, WalletInfo, statistics, delete_transaction,
-                             add_transaction)
+                             add_transaction, NewsAPI)
 
 urlpatterns = [
     path('news/', NewsHome.as_view(), name='home'),
@@ -19,4 +19,5 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('edit_profile/', edit_profile, name='edit_profile'),
     path('statistics/', statistics, name='statistics'),
+    path('api/v1/newslist/', NewsAPI.as_view()),
 ]
