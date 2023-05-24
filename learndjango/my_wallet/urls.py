@@ -2,15 +2,15 @@ from django.urls import path
 
 from my_wallet.views import (NewsHome, ShowNews, MyWallet, add_wallet, delete_wallet, RegisterUser, LoginUser,
                              open_wallet, logout_user, edit_profile, WalletInfo, statistics, delete_transaction,
-                             add_transaction, NewsAPI)
+                             add_transaction, WalletAPICreate, NewsAPIList, WalletAPIDetail, WalletAPIList)
 
 urlpatterns = [
     path('news/', NewsHome.as_view(), name='home'),
     path('news/<slug:news_slug>', ShowNews.as_view(), name='news'),
     path('wallets/', MyWallet.as_view(), name='wallets'),
-    path('wallets/add_wallet', add_wallet, name='add_wallet'),
-    path('wallets/delete_wallet', delete_wallet, name='delete_wallet'),
-    path('wallets/open_wallet', open_wallet, name='open_wallet'),
+    path('wallets/add_wallet/', add_wallet, name='add_wallet'),
+    path('wallets/delete_wallet/', delete_wallet, name='delete_wallet'),
+    path('wallets/open_wallet/', open_wallet, name='open_wallet'),
     path('wallets/<slug:wallet_slug>/', WalletInfo.as_view(), name='wallet_info'),
     path('add_transaction/<slug:wallet_name>/', add_transaction, name='add_transaction'),
     path('delete_transaction/<int:transaction_id>/', delete_transaction, name='delete_transaction'),
@@ -19,5 +19,8 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('edit_profile/', edit_profile, name='edit_profile'),
     path('statistics/', statistics, name='statistics'),
-    path('api/v1/newslist/', NewsAPI.as_view()),
+    path('api/v1/newslist/', NewsAPIList.as_view()),
+    path('api/v1/walletlist/', WalletAPIList.as_view()),
+    path('api/v1/wallet/', WalletAPICreate.as_view()),
+    path('api/v1/wallet/<str:name>/', WalletAPIDetail.as_view()),
 ]

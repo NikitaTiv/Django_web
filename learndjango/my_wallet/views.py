@@ -15,7 +15,8 @@ from transliterate import translit
 
 from my_wallet.forms import AddWalletForm, RegisterUserForm, AddTransactionForm, StatReportForm
 from my_wallet.models import News, Wallet, Transaction
-from my_wallet.serializers import NewsSerializer
+from my_wallet.permissions import IsOwner
+from my_wallet.serializers import NewsSerializer, WalletSerializer
 from my_wallet.utils.convert_func import convert_date
 from my_wallet.utils.db_functions import get_objects_list
 
@@ -174,6 +175,25 @@ def statistics(request):
     return render(request, "my_wallet/statistics.html", {'form': form, 'statistics': transactions, 'summary': summary})
 
 
-class NewsAPI(generics.ListAPIView):
+class NewsAPIList(generics.ListAPIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
+
+
+class WalletAPIList(generics.ListAPIView):
+    serializer_class = WalletSerializer
+
+    def get_queryset(self):
+        return Wallet.objects.filter(user=self.request.user)
+
+
+class WalletAPIDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Wallet.objects.all()
+    serializer_class = WalletSerializer
+    lookup_field = 'name'
+    permission_classes = (IsOwner,)
+
+
+class WalletAPICreate(generics.CreateAPIView):
+    queryset = Wallet.objects.all()
+    serializer_class = WalletSerializer
