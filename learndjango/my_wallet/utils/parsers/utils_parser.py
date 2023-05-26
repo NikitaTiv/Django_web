@@ -31,7 +31,7 @@ def cut_slug(text: str) -> str:
 
 def replace_slug_symblols(text: str) -> str:
     replace_values = {
-        '’': '', ',': '', '.': '', ' ': '_', ':': '', '‘': '', '/': '', "'": '', 'é': '',
+        '’': '', ',': '', '.': '', ' ': '_', ':': '', '‘': '', '/': '', "'": '', 'é': '', '#': '', '"': '', '+': '',
     }
     for old_symbol, new_symbol in replace_values.items():
         text = text.replace(old_symbol, new_symbol)

@@ -1,8 +1,9 @@
 from django.urls import path
 
+
 from my_wallet.views import (NewsHome, ShowNews, MyWallet, add_wallet, delete_wallet, RegisterUser, LoginUser,
-                             open_wallet, logout_user, edit_profile, WalletInfo, statistics, delete_transaction,
-                             add_transaction, WalletAPICreate, NewsAPIList, WalletAPIDetail, WalletAPIList)
+                             open_wallet, edit_profile, WalletInfo, statistics, delete_transaction,
+                             add_transaction, logout_user)
 
 urlpatterns = [
     path('news/', NewsHome.as_view(), name='home'),
@@ -19,8 +20,4 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('edit_profile/', edit_profile, name='edit_profile'),
     path('statistics/', statistics, name='statistics'),
-    path('api/v1/newslist/', NewsAPIList.as_view()),
-    path('api/v1/walletlist/', WalletAPIList.as_view()),
-    path('api/v1/wallet/', WalletAPICreate.as_view()),
-    path('api/v1/wallet/<str:name>/', WalletAPIDetail.as_view()),
 ]

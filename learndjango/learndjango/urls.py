@@ -23,6 +23,7 @@ from learndjango.settings import DEBUG, MEDIA_URL, MEDIA_ROOT
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('my_wallet.urls')),
+    path('', include('api.urls')),
 ]
 
 if DEBUG:
