@@ -23,5 +23,7 @@ POSTGRES_PASSWORD = 'Пароль'
 POSTGRES_HOST = 'Ваш хост'
 POSTGRES_PORT = 'Ваш порт'
 POSTGRES_DBNAME = 'Имя базы данных'
+SECRET_KEY = 'Ваш секретный ключ Django'
+NEWSDATA_API = 'Ваш токен NEWSDATA_API'
 ```
 6. В командной строке запустите сервер (`python3 manage.py runserver`)
