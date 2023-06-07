@@ -168,5 +168,9 @@ def statistics(request):
         return redirect('statistics')
     ordering = request.POST['filters'] if request.method == "POST" else '-time_create'
     transactions = get_objects_list(date_from, date_to, ordering, request.user)
-    summary = sum([transaction.amount for transaction in transactions])
-    return render(request, "my_wallet/statistics.html", {'form': form, 'statistics': transactions, 'summary': summary})
+    if transactions:
+        summary = sum([transaction.amount for transaction in transactions])
+        return render(
+            request, "my_wallet/statistics.html", {'form': form, 'statistics': transactions, 'summary': summary}
+        )
+    return render(request, "my_wallet/statistics.html", {'form': form, 'statistics': None})

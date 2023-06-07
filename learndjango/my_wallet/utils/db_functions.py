@@ -1,9 +1,14 @@
 from datetime import datetime, timedelta
+from django.db.models.query import QuerySet
 import pytz
 
 from my_wallet.models import Transaction
 
 utc=pytz.UTC
+
+
+def get_transaction_object(ordering: str, user: str) -> QuerySet:
+    return Transaction.objects.order_by(ordering).filter(wallet__user=user)
 
 
 def get_objects_list(date_from: datetime, date_to: datetime, ordering: str, user: str) -> list[Transaction]:
