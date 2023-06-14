@@ -140,7 +140,7 @@ class WalletInfo(LoginRequiredMixin, ListView, FormView):
 def add_transaction(request, wallet_name):
     wallet_description = request.POST.get('description', False)
     wallet_amount = request.POST.get('amount', False)
-    wallet = Wallet.objects.values('id').get(slug=wallet_name, user__username=request.user)
+    wallet = Wallet.objects.values('id').get(slug=wallet_name, user=request.user)
     if wallet_description and wallet_amount and wallet:
         try:
             Transaction.objects.create(
